@@ -33,6 +33,7 @@ const AskQuestion = () => {
     setMessages([...messages, {text: 'This is my response', role: 0}]);
     setIsSending(false);
   };
+
   const handleSend = () => {
     // handle sending the text input
     setIsSending(true);

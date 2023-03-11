@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -7,18 +7,19 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
-  VerticalSegment,
 } from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import pic from '../../assets/profilepic.png';
 import edit from '../../assets/edit-2.png';
 import checkPng from '../../assets/check-circle.png';
 import xCerclePng from '../../assets/x-circle.png';
+import {UserContext} from '../../AuthContext';
+import auth from '@react-native-firebase/auth';
 
-export default function Profile() {
-  const [name, setName] = useState('Nadjib Salmi');
-  const [description, setDescription] = useState(
-    'Nadjib Salmi, 27 years old, project manager At “Company name”. Graduated from “university name”. I am interested in design field (motion design, graphic design...)',
-  );
+export default function Profile({navigation}) {
+  const user = useContext(UserContext);
+  const [description, setDescription] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [newDescription, setNewDescription] = useState(description);
   const handleEdit = () => {
@@ -27,20 +28,53 @@ export default function Profile() {
 
   const handleSubmit = () => {
     setDescription(newDescription);
+    _storeData(newDescription);
     setShowModal(false);
   };
+  const signOutHanlder = () => {
+    auth().signOut().then(navigation.navigate('signIn'));
+  };
+
+  const _storeData = async value => {
+    try {
+      await AsyncStorage.setItem(user.email, value);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  _retrieveData = async () => {
+    console.log('before receive');
+    try {
+      const value = await AsyncStorage.getItem(user.email);
+      console.log(value);
+
+      if (value !== null) {
+        setDescription(value);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+
+  useEffect(() => {
+    _retrieveData();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.bigText}>My To-Do List</Text>
       <View style={styles.profileContainer}>
-        <Image source={pic} style={styles.profilePhoto} />
+        <Image source={{uri: user.photoURL}} style={styles.profilePhoto} />
       </View>
       <View style={styles.profileBox}>
         <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
           <Image source={edit} style={styles.editPhoto} />
         </TouchableOpacity>
-        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.name}>{user.displayName}</Text>
         <Text style={styles.description}>{description}</Text>
+        <TouchableOpacity style={styles.signOut} onPress={signOutHanlder}>
+          <Text style={{fontSize: 18}}>Logout</Text>
+        </TouchableOpacity>
       </View>
       <Modal visible={showModal} animationType="fade" transparent={true}>
         <View style={styles.modalContainer}>
@@ -92,6 +126,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingHorizontal: 20,
     paddingVertical: 100,
+    alignItems: 'center',
     elevation: 3,
     zIndex: 1,
     position: 'relative',
@@ -170,5 +205,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     right: 20,
+  },
+  signOut: {
+    padding: 10,
+    backgroundColor: '#F2F2F2',
+    borderRadius: 10,
+    marginTop: 12,
   },
 });

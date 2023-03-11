@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
+
 import {
   Dimensions,
   ScrollView,
@@ -15,16 +16,36 @@ import {
   Text,
   View,
 } from 'react-native';
-import Voice2 from '../../components/Voice2';
-
+import {UserContext} from '../../AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Description = ({navigation}) => {
+  const user = useContext(UserContext);
   const [biographie, setBiographie] = useState('');
 
-  useEffect(() => {
-    Tts.setDefaultLanguage('en-US');
-    Tts.speak('please write or record a short biography of yourself .');
+  const _storeData = async value => {
+    try {
+      await AsyncStorage.setItem(user.email, value);
+    } catch (error) {
+      // Error saving data
+    }
+  };
+
+  useEffect(async () => {
+    try {
+      const value = await AsyncStorage.getItem(user.email);
+      if (value !== null) {
+        navigation.navigate('logedIn');
+      } else {
+        Tts.setDefaultLanguage('en-US');
+        Tts.speak('please write or record a short biography of yourself .');
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
   }, []);
+
   const signUpHandler = () => {
+    _storeData(biographie);
     navigation.navigate('logedIn');
   };
   const onChangeBiographie = e => {

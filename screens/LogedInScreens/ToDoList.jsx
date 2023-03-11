@@ -81,13 +81,19 @@ export default function ToDoList() {
               <TouchableOpacity
                 onPress={() => setIsModalVisible(false)}
                 style={styles.cancelButton}>
-                <Image source={xCerclePng} style={styles.image} />
+                <Image
+                  source={xCerclePng}
+                  style={styles.image}
+                  width={42}
+                  height={42}
+                />
               </TouchableOpacity>
               <TextInput
                 value={newTodo}
                 onChangeText={setNewTodo}
                 placeholder="Add a new task..."
                 style={styles.textInput}
+                multiline={true}
               />
 
               <TouchableOpacity
@@ -155,7 +161,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: 'white',
-    borderRadius: 50,
+    borderRadius: 20,
     padding: 20,
     paddingTop: 35,
     alignItems: 'center',
@@ -173,10 +179,7 @@ const styles = StyleSheet.create({
     color: 'white',
     padding: 20,
   },
-  image: {
-    width: 16,
-    height: 16,
-  },
+
   cancelButton: {
     width: 20,
     height: 20,
