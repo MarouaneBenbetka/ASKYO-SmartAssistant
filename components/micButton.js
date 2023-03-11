@@ -1,9 +1,14 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, Image} from 'react-native';
 
-export default function MicButton({onPress, imageSource}) {
+export default function MicButton({onPress, imageSource, isPressed}) {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.circleButton}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[
+        styles.circleButton,
+        isPressed ? styles.pressed : styles.notPressed,
+      ]}>
       <Image source={imageSource} style={styles.image} resizeMode="contain" />
     </TouchableOpacity>
   );
@@ -23,6 +28,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  pressed: {
+    backgroundColor: '#ffadc3',
+  },
+  notPressed: {
+    backgroundColor: '#FF0042',
   },
   image: {
     width: 35,

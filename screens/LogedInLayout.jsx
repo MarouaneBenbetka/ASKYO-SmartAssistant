@@ -3,7 +3,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StyleSheet} from 'react-native';
 
 import Home from './LogedInScreens/Home';
-import Articles from './LogedInScreens/Articles';
 import Profile from './LogedInScreens/Profile';
 import ToDoList from './LogedInScreens/ToDoList';
 
@@ -69,7 +68,6 @@ export default function LogedInLayout() {
         },
       })}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Articles" component={Articles} />
       <Tab.Screen name="ToDoList" component={ToDoList} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>

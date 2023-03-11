@@ -1,5 +1,10 @@
 import {useEffect, useState} from 'react';
-import {Dimensions, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import {TextInput} from 'react-native';
 import Tts from 'react-native-tts';
 import {
@@ -28,7 +33,7 @@ const Description = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <ScrollView style={{height: 20}} contentContainerStyle={{flex: 1}}>
+      <ScrollView>
         <View style={styles.container}>
           <Image
             style={styles.shapeTop}
@@ -40,6 +45,7 @@ const Description = ({navigation}) => {
               alignItems: 'center',
               flex: 1,
               zIndex: 30,
+              height: Dimensions.get('window').height,
             }}>
             <TextInput
               style={styles.input}
@@ -48,12 +54,13 @@ const Description = ({navigation}) => {
               value={biographie}
               multiline={true}
             />
-            <Voice2
+
+            {/* <Voice2
               id="100"
               key={'100'}
               text={biographie}
               setText={setBiographie}
-            />
+            /> */}
 
             <View style={{position: 'relative'}}>
               <Image
@@ -99,7 +106,7 @@ const styles = StyleSheet.create({
     zIndex: 20,
     width: '80%',
     marginBottom: 14,
-    height: 120,
+    height: 200,
     padding: 14,
     borderRadius: 18,
     backgroundColor: '#fff',

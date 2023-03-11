@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, Animated} from 'react-native';
 import micPng from '../assets/mic.png';
 import MicButton from './MicButton';
 
 import Voice from '@react-native-community/voice';
 import VerticalSegment from './segment';
+
 class Voice2 extends Component {
   state = {
     recognized: '',
     pitch: '',
     error: '',
-    end: '',
-    started: '',
+    end: true,
+    started: false,
     result: '',
     partialResults: [],
     height: [20, 35, 46],
@@ -29,14 +30,14 @@ class Voice2 extends Component {
   }
 
   componentWillUnmount() {
-    Voice.destroy().then(Voice.removeAllListeners);
+    Voice.destroy();
   }
 
   onSpeechStart = e => {
     // eslint-disable-next-line
     console.log('onSpeechStart: ', e);
     this.setState({
-      started: '√',
+      started: true,
     });
   };
 
@@ -52,7 +53,8 @@ class Voice2 extends Component {
     // eslint-disable-next-line
     console.log('onSpeechEnd: ', e);
     this.setState({
-      end: '√',
+      end: true,
+      started: false,
     });
   };
 
@@ -93,14 +95,15 @@ class Voice2 extends Component {
   };
 
   _startRecognizing = async () => {
+    console.log(this.props.id);
     this.setState({
       recognized: '',
       pitch: '',
       error: '',
-      started: '',
+      started: false,
       results: [],
       partialResults: [],
-      end: '',
+      end: false,
     });
 
     try {
@@ -153,17 +156,78 @@ class Voice2 extends Component {
       //   <Image width={200} source={require('../assets/voice.png')} />
       // </TouchableOpacity>
       <View style={styles.buttonGroupe}>
-        <VerticalSegment height={this.state.height[0]} />
-        <VerticalSegment height={this.state.height[1]} />
-        <VerticalSegment height={this.state.height[2]} />
+        <VerticalSegment
+          height={
+            this.state.started
+              ? Math.min(
+                  Math.abs(this.state.pitch) *
+                    Math.floor(Math.random() * 10 + 10),
+                  56,
+                )
+              : this.state.height[0]
+          }
+        />
+        <VerticalSegment
+          height={
+            this.state.started
+              ? Math.min(
+                  Math.abs(this.state.pitch) *
+                    Math.floor(Math.random() * 10 + 10),
+                  56,
+                )
+              : this.state.height[1]
+          }
+        />
+        <VerticalSegment
+          height={
+            this.state.started
+              ? Math.min(
+                  Math.abs(this.state.pitch) *
+                    Math.floor(Math.random() * 10 + 10),
+                  56,
+                )
+              : this.state.height[2]
+          }
+        />
         <MicButton
           key={this.props.id}
           onPress={this._startRecognizing}
           imageSource={micPng}
+          isPressed={this.state.started}
         />
-        <VerticalSegment height={this.state.height[2]} />
-        <VerticalSegment height={this.state.height[1]} />
-        <VerticalSegment height={this.state.height[0]} />
+        <VerticalSegment
+          height={
+            this.state.started
+              ? Math.min(
+                  Math.abs(this.state.pitch) *
+                    Math.floor(Math.random() * 10 + 10),
+                  56,
+                )
+              : this.state.height[2]
+          }
+        />
+        <VerticalSegment
+          height={
+            this.state.started
+              ? Math.min(
+                  Math.abs(this.state.pitch) *
+                    Math.floor(Math.random() * 10 + 10),
+                  56,
+                )
+              : this.state.height[1]
+          }
+        />
+        <VerticalSegment
+          height={
+            this.state.started
+              ? Math.min(
+                  Math.abs(this.state.pitch) *
+                    Math.floor(Math.random() * 10 + 10),
+                  56,
+                )
+              : this.state.height[0]
+          }
+        />
       </View>
     );
   }

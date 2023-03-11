@@ -1,10 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 
-const ChatBubble = ({ message, currentUser }) => {
+const ChatBubble = ({message, currentUser}) => {
   return (
-    <View style={[styles.bubble, currentUser ? styles.currentUser : styles.bot]}>
-      <Text style={[styles.text, currentUser ? styles.textCurrentUser : styles.textBot]}>{message}</Text>
+    <View
+      style={[styles.bubble, currentUser ? styles.currentUser : styles.bot]}>
+      <Text
+        style={[
+          styles.text,
+          currentUser ? styles.textCurrentUser : styles.textBot,
+        ]}>
+        {message}
+      </Text>
     </View>
   );
 };
@@ -13,7 +20,8 @@ const styles = StyleSheet.create({
   bubble: {
     padding: 10,
     borderRadius: 10,
-    margin: 10,
+    marginVertical: 10,
+    maxWidth: '80%',
   },
   currentUser: {
     backgroundColor: '#949494',
