@@ -9,7 +9,6 @@ import Voice2 from '../../components/Voice2';
 import Tts from 'react-native-tts';
 
 const AskQuestion = () => {
-  const [height, setHeight] = useState([20, 35, 46]);
   const [question, setQuestion] = useState('');
   const scrollViewRef = useRef();
   const [messages, setMessages] = useState([]);
@@ -30,8 +29,6 @@ const AskQuestion = () => {
   }, []);
 
   const generateResponse = () => {
-    setHeight([10, 10, 10]);
-    console.log('Button pressed');
     console.log(question);
     setMessages([...messages, {text: 'This is my response', role: 0}]);
     setIsSending(false);
