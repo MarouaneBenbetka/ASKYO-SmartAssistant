@@ -1,0 +1,34 @@
+{
+  "project_info": {
+    "project_number": "775868417819",
+    "project_id": "kyo-conseil",
+    "storage_bucket": "kyo-conseil.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775868417819:android:91a9d4f8aa0412943c35be",
+        "android_client_info": {
+          "package_name": "com.kyo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACDGs9S4fkLsqQaUU8M4JlxosbZQOXzMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "775868417819-esvokdmoba7issk2rfc746s4qtelgsje.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
