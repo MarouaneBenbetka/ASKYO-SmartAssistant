@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import micPng from '../assets/mic.png';
+import MicButton from './MicButton';
 
 import Voice from '@react-native-community/voice';
+import VerticalSegment from './segment';
 class Voice2 extends Component {
   state = {
     recognized: '',
@@ -11,6 +14,7 @@ class Voice2 extends Component {
     started: '',
     result: '',
     partialResults: [],
+    height: [20, 35, 46],
   };
 
   constructor(props) {
@@ -64,6 +68,7 @@ class Voice2 extends Component {
     // eslint-disable-next-line
     console.log('onSpeechResults: ', e);
     this.props.setText(e.value[0]);
+
     this.setState({
       result: e.value[0],
     });
@@ -144,9 +149,22 @@ class Voice2 extends Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={this._startRecognizing}>
-        <Image width={200} source={require('../assets/voice.png')} />
-      </TouchableOpacity>
+      // <TouchableOpacity onPress={this._startRecognizing}>
+      //   <Image width={200} source={require('../assets/voice.png')} />
+      // </TouchableOpacity>
+      <View style={styles.buttonGroupe}>
+        <VerticalSegment height={this.state.height[0]} />
+        <VerticalSegment height={this.state.height[1]} />
+        <VerticalSegment height={this.state.height[2]} />
+        <MicButton
+          key={this.props.id}
+          onPress={this._startRecognizing}
+          imageSource={micPng}
+        />
+        <VerticalSegment height={this.state.height[2]} />
+        <VerticalSegment height={this.state.height[1]} />
+        <VerticalSegment height={this.state.height[0]} />
+      </View>
     );
   }
 }
@@ -182,6 +200,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#B0171F',
     marginBottom: 1,
+  },
+  buttonGroupe: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 10,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 30,
   },
 });
 

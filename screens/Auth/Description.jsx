@@ -17,9 +17,7 @@ const Description = ({navigation}) => {
 
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');
-    Tts.speak(
-      'pease write or record a short biography of yourself including your name,age,job,field , hobbies and interets',
-    );
+    Tts.speak('please write or record a short biography of yourself .');
   }, []);
   const signUpHandler = () => {
     navigation.navigate('logedIn');
@@ -50,7 +48,12 @@ const Description = ({navigation}) => {
               value={biographie}
               multiline={true}
             />
-            <Voice2 text={biographie} setText={setBiographie} />
+            <Voice2
+              id="100"
+              key={'100'}
+              text={biographie}
+              setText={setBiographie}
+            />
 
             <View style={{position: 'relative'}}>
               <Image
