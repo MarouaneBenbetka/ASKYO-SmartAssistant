@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useContext} from 'react';
 import {View, StyleSheet, FlatList, ScrollView, Text} from 'react-native';
 import MicButton from '../../components/MicButton';
 import VerticalSegment from '../../components/segment';
@@ -7,38 +7,77 @@ import ChatBubble from '../../components/chat';
 import micPng from '../../assets/mic.png';
 import Voice2 from '../../components/Voice2';
 import Tts from 'react-native-tts';
+import axios from 'axios';
+import {UserContext} from '../../AuthContext';
 
 const AskQuestion = () => {
   const [question, setQuestion] = useState('');
   const scrollViewRef = useRef();
   const [messages, setMessages] = useState([]);
-
+  const user = useContext(UserContext);
   const [isSending, setIsSending] = useState(false);
 
+  const sendMsg = async msg => {
+    try {
+      const token = await user.getIdToken();
+      const res = await axios.post(
+        'http://192.168.1.50:8000/api/get-response',
+        {message: msg},
+        {
+          headers: {Authorization: 'Berear ' + token},
+        },
+      );
+      console.log(res.data);
+      return res.data.message;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const loadConv = async () => {
+    try {
+      const token = await user.getIdToken();
+      const res = await axios.get(
+        'http://192.168.1.50:8000/api/get-conversation',
+        {
+          headers: {Authorization: 'Berear ' + token},
+        },
+      );
+      const data = res.data;
+      console.log(data);
+      if (data.length > 0) setMessages(data);
+      else
+        setMessages([
+          {
+            content:
+              "Hello i'm ASKYO , your mobile smart assistant how can i assist you today ?",
+            role: 0,
+          },
+        ]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');
     Tts.speak(
       "Hello i'm ask yo, your mobile smart assistant , how can i assist you today ?",
     );
-    setMessages([
-      {
-        text: "Hello i'm ASKYO , your mobile smart assistant how can i assist you today ?",
-        role: 0,
-      },
-    ]);
+    loadConv();
   }, []);
 
-  const generateResponse = () => {
+  const generateResponse = async () => {
     console.log(question);
-    setMessages([...messages, {text: 'This is my response', role: 0}]);
+    const res = await sendMsg(question);
+    setMessages(prv => [...prv, {content: res, role: 0}]);
+    Tts.speak(res);
+
     setIsSending(false);
   };
 
   const handleSend = () => {
     // handle sending the text input
     setIsSending(true);
-    setMessages([...messages, {text: question, role: 1}]);
-    Tts.speak('This is my response');
+    setMessages([...messages, {content: question, role: 'user'}]);
     console.log(`Sending text: ${question}`);
   };
 
@@ -63,7 +102,7 @@ const AskQuestion = () => {
         data={messages}
         keyExtractor={(message, index) => index.toString()}
         renderItem={({item}) => (
-          <ChatBubble message={item.text} currentUser={item.role} />
+          <ChatBubble message={item.content} currentUser={item.role} />
         )}
       />
       <View style={styles.containerButtonGroupe}>

@@ -4,7 +4,10 @@ import {View, Text, StyleSheet} from 'react-native';
 const ChatBubble = ({message, currentUser}) => {
   return (
     <View
-      style={[styles.bubble, currentUser ? styles.currentUser : styles.bot]}>
+      style={[
+        styles.bubble,
+        currentUser === 'user' ? styles.currentUser : styles.bot,
+      ]}>
       <Text
         style={[
           styles.text,
