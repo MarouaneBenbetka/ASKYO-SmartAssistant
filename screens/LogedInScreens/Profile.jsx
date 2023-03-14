@@ -62,7 +62,7 @@ export default function Profile({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.bigText}>My To-Do List</Text>
+      <Text style={styles.bigText}>Profile</Text>
       <View style={styles.profileContainer}>
         <Image source={{uri: user.photoURL}} style={styles.profilePhoto} />
       </View>

@@ -15,7 +15,6 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import {UserContext} from '../../AuthContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = ({navigation}) => {
   const user = useContext(UserContext);
