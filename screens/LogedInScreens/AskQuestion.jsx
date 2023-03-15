@@ -9,6 +9,8 @@ import Voice2 from '../../components/Voice2';
 import Tts from 'react-native-tts';
 import axios from 'axios';
 import {UserContext} from '../../AuthContext';
+import qs from 'qs';
+import {Linking} from 'react-native';
 
 const AskQuestion = () => {
   const [question, setQuestion] = useState('');
@@ -17,7 +19,63 @@ const AskQuestion = () => {
   const user = useContext(UserContext);
   const [isSending, setIsSending] = useState(false);
 
+  const sendEmail = async function sendEmail(to, subject, body, options = {}) {
+    const {cc, bcc} = options;
+
+    let url = `mailto:${to}`;
+
+    // Create email link query
+    const query = qs.stringify({
+      subject: subject,
+      body: body,
+      cc: cc,
+      bcc: bcc,
+    });
+
+    if (query.length) {
+      url += `?${query}`;
+    }
+
+    // check if we can use this link
+    const canOpen = await Linking.canOpenURL(url);
+
+    if (!canOpen) {
+      throw new Error('Provided URL can not be handled');
+    }
+
+    return Linking.openURL(url);
+  };
+
   const sendMsg = async msg => {
+    if (
+      (msg.includes('email') ||
+        msg.includes('mail') ||
+        msg.includes('letter')) &&
+      msg.includes('reply')
+    ) {
+      try {
+        const token = await user.getIdToken();
+        const res = await axios.post(
+          'https://askyo-api.onrender.com/api/get-response',
+          {
+            message:
+              msg +
+              ' i received this message generate a formal , professional reply',
+          },
+          {
+            headers: {Authorization: 'Berear ' + token},
+          },
+        );
+        sendEmail(
+          'destinationAddress@domain.com',
+          '[Write your subject here]',
+          res.data.message,
+        );
+        return res.data.message;
+      } catch (e) {
+        console.log(e);
+      }
+    }
     try {
       const token = await user.getIdToken();
       const res = await axios.post(
@@ -70,6 +128,7 @@ const AskQuestion = () => {
 
   const generateResponse = async () => {
     console.log(question);
+
     const res = await sendMsg(question);
     setMessages(prv => [...prv, {content: res, role: 0}]);
     Tts.speak(res);

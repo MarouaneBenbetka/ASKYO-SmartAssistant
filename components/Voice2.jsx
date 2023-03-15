@@ -94,22 +94,30 @@ class Voice2 extends Component {
   };
 
   _startRecognizing = async () => {
-    console.log(this.props.id);
-    this.setState({
-      recognized: '',
-      pitch: '',
-      error: '',
-      started: false,
-      results: [],
-      partialResults: [],
-      end: false,
-    });
+    if (this.state.started) {
+      this._stopRecognizing();
+      this.setState({
+        end: true,
+        started: false,
+      });
+    } else {
+      console.log(this.props.id);
+      this.setState({
+        recognized: '',
+        pitch: '',
+        error: '',
+        started: false,
+        results: [],
+        partialResults: [],
+        end: false,
+      });
 
-    try {
-      await Voice.start('en-US');
-    } catch (e) {
-      //eslint-disable-next-line
-      console.error(e);
+      try {
+        await Voice.start('en-US');
+      } catch (e) {
+        //eslint-disable-next-line
+        console.error(e);
+      }
     }
   };
 
