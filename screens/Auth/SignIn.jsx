@@ -15,6 +15,7 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import {UserContext} from '../../AuthContext';
+import axios from 'axios';
 
 const SignIn = ({navigation}) => {
   const user = useContext(UserContext);
@@ -28,8 +29,27 @@ const SignIn = ({navigation}) => {
     });
   }, []);
   useEffect(() => {
-    if (user) navigation.navigate('description');
-    console.log(user);
+    if (user) {
+      const fetchDescription = async () => {
+        try {
+          const token = await user.getIdToken();
+          console.log(token);
+          const res = await axios.get(
+            'https://askyo-api.onrender.com/api/get-description',
+            {
+              headers: {Authorization: 'Berear ' + token},
+            },
+          );
+          const data = res.data;
+          console.log(data.description);
+          if (data.description) navigation.navigate('logedIn');
+          else navigation.navigate('description');
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      fetchDescription();
+    }
   }, [user]);
   const onGoogleButtonPress = async () => {
     try {

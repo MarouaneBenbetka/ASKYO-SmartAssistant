@@ -88,7 +88,6 @@ class Voice2 extends Component {
 
   onSpeechVolumeChanged = e => {
     // eslint-disable-next-line
-    console.log('onSpeechVolumeChanged: ', e);
     this.setState({
       pitch: e.value,
     });

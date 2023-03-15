@@ -16,6 +16,7 @@ import checkPng from '../../assets/check-circle.png';
 import xCerclePng from '../../assets/x-circle.png';
 import {UserContext} from '../../AuthContext';
 import auth from '@react-native-firebase/auth';
+import axios from 'axios';
 
 export default function Profile({navigation}) {
   const user = useContext(UserContext);
@@ -36,23 +37,30 @@ export default function Profile({navigation}) {
   };
 
   const _storeData = async value => {
-    try {
-      await AsyncStorage.setItem(user.email, value);
-    } catch (error) {
-      console.log(error);
-    }
+    const token = await user.getIdToken();
+    const res = await axios.post(
+      'https://askyo-api.onrender.com/api/save-description',
+      {description: newDescription},
+      {
+        headers: {Authorization: 'Berear ' + token},
+      },
+    );
   };
   _retrieveData = async () => {
     console.log('before receive');
     try {
-      const value = await AsyncStorage.getItem(user.email);
-      console.log(value);
-
-      if (value !== null) {
-        setDescription(value);
-      }
-    } catch (error) {
-      // Error retrieving data
+      const token = await user.getIdToken();
+      console.log(token);
+      const res = await axios.get(
+        'https://askyo-api.onrender.com/api/get-description',
+        {
+          headers: {Authorization: 'Berear ' + token},
+        },
+      );
+      const data = res.data;
+      setDescription(data.description);
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -68,7 +76,10 @@ export default function Profile({navigation}) {
       </View>
       <View style={styles.profileBox}>
         <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
-          <Image source={edit} style={styles.editPhoto} />
+          <Image
+            source={require('../../assets/edit-2.png')}
+            style={styles.editPhoto}
+          />
         </TouchableOpacity>
         <Text style={styles.name}>{user.displayName}</Text>
         <Text style={styles.description}>{description}</Text>
@@ -90,12 +101,18 @@ export default function Profile({navigation}) {
             />
             <View style={styles.modalButtonContainer}>
               <TouchableOpacity onPress={handleSubmit} style={styles.addButton}>
-                <Image source={checkPng} style={styles.imag} />
+                <Image
+                  source={require('../../assets/check-circle.png')}
+                  style={styles.imag}
+                />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => setShowModal(false)}
                 style={styles.cancelButton}>
-                <Image source={xCerclePng} style={styles.imag} />
+                <Image
+                  source={require('../../assets/x-circle.png')}
+                  style={styles.imag}
+                />
               </TouchableOpacity>
             </View>
           </View>

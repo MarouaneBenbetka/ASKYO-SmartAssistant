@@ -82,7 +82,7 @@ export default function ToDoList() {
                 onPress={() => setIsModalVisible(false)}
                 style={styles.cancelButton}>
                 <Image
-                  source={xCerclePng}
+                  source={require('../../assets/x-circle.png')}
                   style={styles.image}
                   width={42}
                   height={42}
@@ -100,7 +100,7 @@ export default function ToDoList() {
                 onPress={handleAddTodo}
                 style={styles.addButton}>
                 <Image
-                  source={checkPng}
+                  source={require('../../assets/check-circle.png')}
                   style={styles.image}
                   resizeMode="contain"
                 />

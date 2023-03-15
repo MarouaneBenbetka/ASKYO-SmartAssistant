@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import {UserContext} from '../../AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 const Description = ({navigation}) => {
   const user = useContext(UserContext);
   const [biographie, setBiographie] = useState('');
@@ -30,22 +31,19 @@ const Description = ({navigation}) => {
     }
   };
 
-  useEffect(async () => {
-    try {
-      const value = await AsyncStorage.getItem(user.email);
-      if (value !== null) {
-        navigation.navigate('logedIn');
-      } else {
-        Tts.setDefaultLanguage('en-US');
-        Tts.speak('please write or record a short biography of yourself .');
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-  }, []);
+  const saveDescription = async () => {
+    const token = await user.getIdToken();
+    const res = await axios.post(
+      'https://askyo-api.onrender.com/api/save-description',
+      {description: biographie},
+      {
+        headers: {Authorization: 'Berear ' + token},
+      },
+    );
+  };
 
   const signUpHandler = () => {
-    _storeData(biographie);
+    saveDescription();
     navigation.navigate('logedIn');
   };
   const onChangeBiographie = e => {

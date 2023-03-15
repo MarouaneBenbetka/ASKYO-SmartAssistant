@@ -21,7 +21,7 @@ const AskQuestion = () => {
     try {
       const token = await user.getIdToken();
       const res = await axios.post(
-        'http://192.168.1.50:8000/api/get-response',
+        'https://askyo-api.onrender.com/api/get-response',
         {message: msg},
         {
           headers: {Authorization: 'Berear ' + token},
@@ -37,13 +37,12 @@ const AskQuestion = () => {
     try {
       const token = await user.getIdToken();
       const res = await axios.get(
-        'http://192.168.1.50:8000/api/get-conversation',
+        'https://askyo-api.onrender.com/api/get-conversation',
         {
           headers: {Authorization: 'Berear ' + token},
         },
       );
       const data = res.data;
-      console.log(data);
       if (data.length > 0) setMessages(data);
       else
         setMessages([
@@ -58,11 +57,15 @@ const AskQuestion = () => {
     }
   };
   useEffect(() => {
+    loadConv();
+    try {
+      scrollViewRef.current.scrollToEnd({animated: true});
+    } catch {}
     Tts.setDefaultLanguage('en-US');
     Tts.speak(
       "Hello i'm ask yo, your mobile smart assistant , how can i assist you today ?",
     );
-    loadConv();
+    // loadConv();
   }, []);
 
   const generateResponse = async () => {
