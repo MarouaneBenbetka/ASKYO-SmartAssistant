@@ -1,4 +1,4 @@
-![App Logo](./assets/readme-assets/logo.png)
+<img src="./assets/readme-assets/logo.png" alt="App Logo" width="60" style="max-width:100%; height:auto;">
 
 # ASKYO Email Assistant - Mobile Solution
 
