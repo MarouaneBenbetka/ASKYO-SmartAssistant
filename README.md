@@ -1,3 +1,5 @@
+![App Logo](./assets/readme-assets/logo.png)
+
 # ASKYO Email Assistant - Mobile Solution
 
 Welcome to the KYO-Conseil Email Assistant mobile solution repository! Developed with React Native, this project tackles the KYO-Conseil challenge by integrating the GPT API to enhance email communication. Recognized as a top 5 finalist, our solution includes a certification to validate its achievement.
