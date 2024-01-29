@@ -16,12 +16,12 @@ Welcome to the KYO-Conseil Email Assistant mobile solution repository! Developed
 
 ## Video Presentation
 
-[![KYO-Conseil Email Assistant](./assets/readme-assets/thumbmail.png)](./assets/readme-assets/ASKYO_Presentation_.mkv)
+[![KYO-Conseil Email Assistant](./assets/readme-assets/thumbmail.png)](./assets/readme-assets/ASKYO_Presentation.mp4)
 
 Watch the video presentation for a quick overview of the solution's features.
 
 ## Certification
 
-Our solution ranked among the top 5 finalists in the KYO-Conseil challenge. [View Certification](./assets/readme-assets/CERTIFICATE%20OF%20ACHIEVEMENT024000.pdf)
+Our solution ranked among the top 5 finalists in the KYO-Conseil challenge. [View Certification](./assets/readme-assets/certificat.png)
 
 Feel free to explore the codebase and contribute to the KYO-Conseil Email Assistant!
